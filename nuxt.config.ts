@@ -17,5 +17,9 @@ export default <Configuration> {
 
     head: {
         title: 'CoH2 Tactical Map Icon Renderer',
+    },
+
+    router: {
+        base: '/coh2-tactical-map-icons-renderer/'
     }
 }
