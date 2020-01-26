@@ -21,5 +21,17 @@ export default <Configuration> {
 
     router: {
         base: '/coh2-tactical-map-icons-renderer/'
-    }
+    },
+    
+    vuetify: {
+        theme: {
+            // remove when https://github.com/nuxt-community/vuetify-module/issues/208 is fixed
+            disable: true,
+        }
+    },
+
+    css: [
+        // remove when https://github.com/nuxt-community/vuetify-module/issues/208 is fixed
+        'vuetify/dist/vuetify.css',
+    ],
 }

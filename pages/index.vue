@@ -139,6 +139,16 @@
             (file: File) => (file && file.name.endsWith('.info')) || 'Not a valid .info file',
         ];
 
+        head() {
+            return {
+                style: [{
+                    hid: "vuetifyTheme",
+                    type: "text/css",
+                    cssText: (this as any).$vuetify.theme.generatedStyles,
+                }],
+            }
+        }
+
         mounted() {
             const canvas = this.$refs.canvas;
             this.ctx = canvas.getContext('2d');
