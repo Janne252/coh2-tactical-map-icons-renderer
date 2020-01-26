@@ -71,7 +71,7 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions class="pl-4 pr-4">
-                        <v-btn color="info" :disabled="!canDownload" @click="download" :loading="isLoading">
+                        <v-btn color="info" :disabled="!canDownload" @click="download" :loading="isDownloading">
                             <v-icon>mdi-download</v-icon>
                             <span>Download as *.png</span>
                         </v-btn>
@@ -138,6 +138,7 @@
         isTgaFileLoaded = false;
         isInfoFileLoaded = false;
         isLoading = false;
+        isDownloading = false;
 
         get areFilesLoaded() {
             return this.isTgaFileLoaded && this.isInfoFileLoaded;
@@ -251,12 +252,14 @@
 
         download() {
             this.isLoading = true;
+            this.isDownloading = true;
             this.$refs.canvas.toBlob((result) => {
                 downloadBlob(result, this.tgaFileName.replace(/.tga$/g, '.png'))
             }, 'image/png');
             
             window.setTimeout(() => {
                 this.isLoading = false;
+                this.isDownloading = false;
             }, 1000);
         }
 
