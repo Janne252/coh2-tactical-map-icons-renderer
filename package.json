@@ -1,15 +1,10 @@
 {
     "name": "coh2-tactical-map-icons-renderer",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
     "scripts": {
         "dev": "nuxt-ts",
         "generate": "nuxt-ts generate"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "@mdi/font": "^4.8.95",
         "@nuxt/typescript-build": "^0.5.6",
