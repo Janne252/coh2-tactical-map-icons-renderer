@@ -84,11 +84,18 @@
                 </v-card>
             </v-container>
         </v-content>
-        <v-snackbar v-model="showInvalidTgaFileWarning">
+        <v-snackbar v-model="showUnknownMapObjectNameWarning" :timeout="0">
+            Unknown map objects: &nbsp;
+            <template v-for="(name, index) in unknownMapObjectNames">
+                <code :key="name">{{ name }}</code><template v-if="index < unknownMapObjectNames.length - 1"><span :key="`${name}-comma`" class="pl-1"></span></template>
+            </template>
+            <v-btn color="red" text @click="showUnknownMapObjectNameWarning = false">OK</v-btn>
+        </v-snackbar>
+        <v-snackbar v-model="showInvalidTgaFileWarning" :timeout="0">
             Please choose a valid .tga file
             <v-btn color="red" text @click="tgaFile = null; showInvalidTgaFileWarning = false">OK</v-btn>
         </v-snackbar>
-        <v-snackbar v-model="showInvalidInfoFileWarning">
+        <v-snackbar v-model="showInvalidInfoFileWarning" :timeout="0">
             Please choose a valid .info file
             <v-btn color="red" text @click="infoFile = null; showInvalidInfoFileWarning = false">OK</v-btn>
         </v-snackbar>
@@ -108,7 +115,9 @@
             canvas: HTMLCanvasElement;
             canvasContainer: HTMLElement;
         }
-
+        
+        showUnknownMapObjectNameWarning = false;
+        unknownMapObjectNames: string[] = [];
         showInvalidTgaFileWarning = false;
         tgaFile: File = null;
         showInvalidInfoFileWarning = false;
@@ -286,14 +295,22 @@
                             }
                         }
                     }
+                    this.unknownMapObjectNames = [];
                     for (const point of this.mapData.point_positions) {
                         const name = point.ebp_name + (point.owner_id > 0 ? '__' + point.owner_id : '');
 
                         if (!(name in this.iconImages)) {
                             const ebpImageName = ebpIconMap[name];
-                            this.iconImages[name] = await loadImage(require(`~/assets/coh2/${ebpImageName}.png`));
+                            try {
+                                this.iconImages[name] = await loadImage(require(`~/assets/coh2/${ebpImageName}.png`));
+                            } catch (error) {
+                                if (this.unknownMapObjectNames.indexOf(point.ebp_name) === -1) {
+                                    this.unknownMapObjectNames.push(point.ebp_name);
+                                }
+                            }
                         }
                     }
+                    this.showUnknownMapObjectNameWarning = this.unknownMapObjectNames.length > 0;
                     
                     this.canReset = true;
                     this.isInfoFileLoaded = true;
@@ -337,6 +354,10 @@
 
                 for (const point of this.mapData.point_positions) { 
                     const name = point.ebp_name + (point.owner_id > 0 ? '__' + point.owner_id : '');
+                    if (!(name in this.iconImages)) {
+                        continue;
+                    }
+
                     const icon = this.iconImages[name];
                     let x = (point.x) - (icon.naturalWidth * this.iconScale) / 2;
                     let y = (flip(point.y)) - (icon.naturalHeight * this.iconScale) / 2;
