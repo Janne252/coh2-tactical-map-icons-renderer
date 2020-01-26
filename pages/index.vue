@@ -152,10 +152,6 @@
         mounted() {
             const canvas = this.$refs.canvas;
             this.ctx = canvas.getContext('2d');
-            this.resizeCanvas();
-
-            window.addEventListener('resize', () => {
-            }); 
         }
 
         @Watch('isTgaFileLoaded')
@@ -370,12 +366,13 @@
     }
 
     #canvas {
+        min-width: 100%;
         max-width: 100%;
     }
 
     #canvas-container {
         background-image: url('~assets/backgrounds/squares.png');
         background-repeat: repeat;
-        padding: 8px;
+        padding: 12px;
     }
 </style>
