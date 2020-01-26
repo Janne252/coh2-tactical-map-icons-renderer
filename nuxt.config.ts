@@ -3,7 +3,7 @@ import { Configuration } from '@nuxt/types';
 export default <Configuration> {
     buildDir: './dist/app/',
     generate: {
-        dir: './dist/static/'
+        dir: './docs/'
     },
     // Modules that process the source code
     buildModules: [
