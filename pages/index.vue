@@ -3,8 +3,12 @@
         <v-content>
             <v-container class="fill-height justify-center" fluid>
                 <v-card class="elevation-12">
-                    <v-toolbar color="primary" dark flat>
+                    <v-toolbar color="black" dark flat>
                         <v-toolbar-title>CoH2 Tactical Map Icon Renderer</v-toolbar-title>
+                        <v-spacer />
+                        <v-btn icon large tile target="_blank" href="https://github.com/Janne252/coh2-tactical-map-icons-renderer">
+                            <v-icon large>mdi-github-box</v-icon>
+                        </v-btn>
                     </v-toolbar>
                     <v-card-text class="pt-0 pl-0 pr-0">
                         <v-row align="center" justify="center" class="ml-0 mr-0">
@@ -56,13 +60,13 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-btn type="button" color="primary" :disabled="!canDownload || isLoading" @click="download" :class="{'is-loading': isLoading}">
+                    <v-card-actions class="pl-4 pr-4">
+                        <v-btn color="black" :disabled="!canDownload || isLoading" @click="download" :class="{'is-loading': isLoading}" dark>
                             <v-icon>mdi-download</v-icon>
                             <span>Download as *.png</span>
                         </v-btn>
                         <v-spacer />
-                        <v-btn type="button" :disabled="!canReset || isLoading" @click="reset">
+                        <v-btn color="error" :disabled="!canReset || isLoading" @click="reset" text>
                             <v-icon>mdi-delete</v-icon>
                             <span>Reset</span>
                         </v-btn>  
