@@ -357,7 +357,7 @@
 
                 for (const point of this.mapData.point_positions) { 
                     const name = point.ebp_name + (point.owner_id > 0 ? '__' + point.owner_id : '');
-                    if (!(name in this.iconImages)) {
+                    if (!(name in this.iconImages) || this.iconImages[name] == null) {
                         continue;
                     }
 
