@@ -46,22 +46,32 @@
                                         label="Icon overlay scale" 
                                         messages="Controls the scale of the icons overlay. Automatically calculated value is usually correct. Adjust if the icons are misaligned."
                                         class="mb-4"
-                                        prepend-icon="mdi-resize"
+                                        prepend-icon="mdi-image-size-select-large"
                                         step="0.05" 
-                                        v-model="iconScale" 
+                                        v-model="iconOverlayScale" 
                                         :disabled="isLoading || !areFilesLoaded" outlined
                                     >
                                         <template v-slot:append>
                                             <v-btn title="Auto-calculate" tile @click="calculateIconScale" class="mt-n1" icon><v-icon>mdi-calculator</v-icon></v-btn>                                            
                                         </template>
                                     </v-text-field>
-                                     
+                                    <v-text-field 
+                                        type="number" 
+                                        label="Icon scale" 
+                                        messages="Controls the size of the icons. Adjust if icons seem too large or small relative to the playable area size."
+                                        class="mb-4"
+                                        prepend-icon="mdi-resize"
+                                        step="0.05" 
+                                        v-model="iconScale" 
+                                        :disabled="isLoading || !areFilesLoaded" outlined
+                                    >
+                                    </v-text-field>
                                 </div>
                             </v-col>
                         </v-row>
                     </v-card-text>
                     <v-card-actions class="pl-4 pr-4">
-                        <v-btn color="black" :disabled="!canDownload || isLoading" @click="download" :class="{'is-loading': isLoading}" dark>
+                        <v-btn color="info" :disabled="!canDownload" @click="download" :loading="isLoading">
                             <v-icon>mdi-download</v-icon>
                             <span>Download as *.png</span>
                         </v-btn>
@@ -110,7 +120,8 @@
         tga: TGALoader = null;
         mapData: {mapsize: number[], point_positions: {x: number, y: number, owner_id: number, ebp_name: string}[]} = null;
         iconImages: {[key: string]: HTMLImageElement} = {};
-        iconScale: number = 0;
+        iconOverlayScale: number = 0;
+        iconScale: number = 1;
 
         canDownload = false;
         canReset = false;
@@ -300,10 +311,11 @@
                 return;
             }
 
-            this.iconScale = this.$refs.canvas.width / Math.max(this.mapWidth, this.mapHeight);
+            this.iconOverlayScale = this.$refs.canvas.width / Math.max(this.mapWidth, this.mapHeight);
         }
 
         @Watch('iconScale')
+        @Watch('iconOverlayScale')
         onIconScaleChanged() {
             this.draw();
         }
@@ -320,16 +332,16 @@
                 this.ctx.save();
                 this.ctx.translate(this.$refs.canvas.width / 2, this.$refs.canvas.height / 2);
                 
-                this.ctx.scale(this.iconScale, this.iconScale);
+                this.ctx.scale(this.iconOverlayScale, this.iconOverlayScale);
                 const flip = (number: number) => number < 0 ? Math.abs(number) : 0 - number;
 
                 for (const point of this.mapData.point_positions) { 
                     const name = point.ebp_name + (point.owner_id > 0 ? '__' + point.owner_id : '');
                     const icon = this.iconImages[name];
-                    let x = (point.x) - icon.naturalWidth / 2;
-                    let y = (flip(point.y)) - icon.naturalHeight / 2;
+                    let x = (point.x) - (icon.naturalWidth * this.iconScale) / 2;
+                    let y = (flip(point.y)) - (icon.naturalHeight * this.iconScale) / 2;
                     
-                    this.ctx.drawImage(icon, x, y);
+                    this.ctx.drawImage(icon, x, y, icon.width * this.iconScale, icon.height * this.iconScale);
                 }
 
                 this.ctx.restore();
