@@ -23,13 +23,6 @@ workbox.precaching.cleanupOutdatedCaches()
 
 // Precache assets
 
-workbox.precaching.precacheAndRoute([
-  "/coh2-tactical-map-icons-renderer/"
-], {
-  "cacheId": "coh2-tactical-map-icons-renderer-prod",
-  "directoryIndex": "/"
-})
-
 // --------------------------------------------------
 // Runtime Caching
 // --------------------------------------------------
