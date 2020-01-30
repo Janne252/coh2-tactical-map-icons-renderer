@@ -81,6 +81,11 @@
                             <span>Reset</span>
                         </v-btn>  
                     </v-card-actions>
+                    <v-card-actions class="justify-end black caption grey--text text--lighten-1">
+                        <span>Version: {{ $nuxt.context.env.version }}</span>
+                        <v-spacer />
+                        Created by <a class="white--text ml-1" href="https://github.com/Janne252" target="_blank">Janne252</a>
+                    </v-card-actions>
                 </v-card>
             </v-container>
         </v-content>
