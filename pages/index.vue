@@ -1,9 +1,9 @@
 <template>
     <v-app>
         <v-content>
-            <v-container class="fill-height justify-center" fluid>
+            <v-container id="container" class="fill-height justify-center" fluid>
                 <v-card class="elevation-12">
-                    <v-toolbar color="black" dark flat>
+                    <v-toolbar id="app-title-toolbar" color="black" dark flat>
                         <v-toolbar-title>CoH2 Tactical Map Icon Renderer</v-toolbar-title>
                         <v-spacer />
                         <v-btn icon large tile target="_blank" href="https://github.com/Janne252/coh2-tactical-map-icons-renderer">
@@ -81,13 +81,42 @@
                             <span>Reset</span>
                         </v-btn>  
                     </v-card-actions>
-                    <v-card-actions class="justify-end black caption grey--text text--lighten-1">
-                        <span>Version: {{ $nuxt.context.env.version }}</span>
-                        <v-spacer />
-                        Created by <a class="white--text ml-1" href="https://github.com/Janne252" target="_blank">Janne252</a>
-                    </v-card-actions>
                 </v-card>
             </v-container>
+            <v-footer class="caption black grey--text text--lighten-1 pa-0">
+                <v-row no-gutters>
+                    <v-col class="foo-1 d-flex align-center pa-2" cols="12" sm="6">
+                        <v-btn icon small dark target="_blank" href="https://github.com/Janne252/coh2-tactical-map-icons-renderer">
+                            <v-icon>mdi-github-box</v-icon>
+                        </v-btn>
+                        <span class="grey--text">Version: {{ $nuxt.context.env.version }}</span>
+                            <v-btn 
+                                class="ml-2 footer-a2hs-action"
+                                v-if="!$a2hs.isInstalled" 
+                                @click="$a2hs.install" 
+                                :disabled="!$a2hs.isAvailable" 
+                                :loading="$a2hs.isInstalling"
+                                small dark text
+                            > 
+                                <v-icon left>mdi-briefcase-download</v-icon>
+                                Install    
+                            </v-btn>
+                            <v-btn 
+                                color="success" 
+                                class="footer-a2hs-action"
+                                v-if="$a2hs.isInstalled" 
+                                :disabled="true" 
+                                text dark
+                            >
+                                <v-icon left>mdi-check</v-icon>
+                                Installed!  
+                            </v-btn>
+                    </v-col>
+                    <v-col class="foo-2 d-flex align-center pa-2 justify-center align-center justify-sm-end footer-author grey--text" cols="12" sm="6">
+                        <span>Created by <a class="grey--text text--lighten-2 ml-1" href="https://github.com/Janne252" target="_blank">Janne252</a></span>
+                    </v-col>
+                </v-row>
+            </v-footer>
         </v-content>
         <v-snackbar v-model="showUnknownMapObjectNameWarning" :timeout="0">
             Unknown map objects: &nbsp;
@@ -415,5 +444,51 @@
         background-image: url('~assets/backgrounds/squares.png');
         background-repeat: repeat;
         padding: 12px;
+    }
+
+    .v-content__wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media #{map-get($display-breakpoints, 'xs-only')} {
+        // Artificially increased selector specificity
+        .footer-a2hs-action.footer-a2hs-action {
+            margin-left: auto !important;
+        }
+
+        .footer-author {
+            padding-top: 8px;
+            border-top: 1px solid #131313;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+
+    @media (display-mode: standalone) {
+        // We'll assume wide screen on standalone mode means desktop, which renders a title bar with the app's name from manifest.json
+        @media #{map-get($display-breakpoints, 'md-and-up')} {
+            #app-title-toolbar {
+                display: none;
+            }
+        }
+
+        .v-toolbar {
+            &, & .v-toolbar__content {
+                border-radius: 0 !important;
+            }
+        }
+
+        #container {
+            flex: 1;
+            padding: 0;
+            align-items: flex-start;
+
+            > * {
+                flex: 1;
+                height: 100%;
+            }
+        }
     }
 </style>

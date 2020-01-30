@@ -1,5 +1,6 @@
 import { Configuration } from '@nuxt/types';
 import * as path from 'path';
+import uuid4 from 'uuid/v4';
 
 const baseUrl = '/coh2-tactical-map-icons-renderer/';
 
@@ -11,7 +12,6 @@ const META = {
     startUrl: baseUrl,
     loadingBarColor: '#000000',
 };
-
 
 export default <Configuration> {
     buildDir: './dist/app/',
@@ -44,9 +44,12 @@ export default <Configuration> {
         workbox: {
             // disable default generated entry
             offline: false,
-            preCaching: [
-                baseUrl,
-            ],
+            // preCaching: [
+            //     { 
+            //         url: baseUrl, 
+            //         revision: uuid4()
+            //     }
+            // ],
             runtimeCaching: [
                 {
                     urlPattern: '/.*', 
@@ -74,6 +77,10 @@ export default <Configuration> {
             theme_color: META.themeColor,
         }
     },
+
+    plugins: [
+        { src: '~/plugins/add-to-homescreen.ts' }
+    ],
     
     vuetify: <any> {
         defaultAssets: false,
