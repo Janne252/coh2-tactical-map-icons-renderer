@@ -3,6 +3,8 @@
     "version": "1.0.1",
     "scripts": {
         "dev": "nuxt-ts",
+        "build": "nuxt-ts build",
+        "start": "nuxt-ts start",
         "generate": "nuxt-ts generate"
     },
     "dependencies": {
@@ -15,10 +17,12 @@
         "nuxt": "^2.11.0",
         "nuxt-property-decorator": "^2.5.0",
         "roboto-fontface": "^0.10.0",
-        "tga-js": "1.1.0"
+        "tga-js": "1.1.0",
+        "uuid": "^3.4.0"
     },
     "devDependencies": {
         "@nuxt/types": "^0.6.1",
-        "@types/luaparse": "^0.2.6"
+        "@types/luaparse": "^0.2.6",
+        "@types/uuid": "^3.4.7"
     }
 }
