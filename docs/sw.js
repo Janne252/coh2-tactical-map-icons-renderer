@@ -23,10 +23,17 @@ workbox.precaching.cleanupOutdatedCaches()
 
 // Precache assets
 
+workbox.precaching.precacheAndRoute([
+  "/"
+], {
+  "cacheId": "coh2-tactical-map-icons-renderer-prod",
+  "directoryIndex": "/"
+})
+
 // --------------------------------------------------
 // Runtime Caching
 // --------------------------------------------------
 
 // Register route handlers for runtimeCaching
+workbox.routing.registerRoute(new RegExp('/.*'), new workbox.strategies.NetworkFirst ({"cacheableResponse":{"statuses":[0,200]}}), 'GET')
 workbox.routing.registerRoute(new RegExp('/coh2-tactical-map-icons-renderer/_nuxt/'), new workbox.strategies.CacheFirst ({}), 'GET')
-workbox.routing.registerRoute(new RegExp('/coh2-tactical-map-icons-renderer/'), new workbox.strategies.NetworkFirst ({}), 'GET')
