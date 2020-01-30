@@ -1,14 +1,17 @@
 import { Configuration } from '@nuxt/types';
 import * as path from 'path';
 
+const baseUrl = '/coh2-tactical-map-icons-renderer/';
+
 const META = {
     title: 'CoH2 Tactical Map Icons renderer',
     shortTitle: 'COH2 Tacmap Icons Renderer',
     description: 'Generates a tactical map preview image with starting position and strategic point icons from <map>_mm_preview.tga / <map>_mm_high.tga and <map>.info files.',
     themeColor: '#000000',
-    startUrl: '/',
+    startUrl: baseUrl,
     loadingBarColor: '#000000',
 };
+
 
 export default <Configuration> {
     buildDir: './dist/app/',
@@ -19,7 +22,7 @@ export default <Configuration> {
     env: {
         version: require('./package.json').version,
     },
-    
+
     // Modules that process the source code
     buildModules: [
         '@nuxt/typescript-build',
@@ -34,7 +37,7 @@ export default <Configuration> {
     loading: { color: META.loadingBarColor },
 
     router: {
-        base: '/coh2-tactical-map-icons-renderer/',
+        base: baseUrl,
     },
 
     pwa: {
@@ -42,7 +45,7 @@ export default <Configuration> {
             // disable default generated entry
             offline: false,
             preCaching: [
-                '/',
+                baseUrl,
             ],
             runtimeCaching: [
                 {
