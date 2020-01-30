@@ -43,21 +43,21 @@ const addToHomeScreen = new Vue({
         },
         async install() {
             addToHomeScreen.isInstalling = true;
-            addToHomeScreen.event.prompt();
             try {
+                addToHomeScreen.event.prompt();
                 const choiceResult = await addToHomeScreen.event.userChoice;
                 if (choiceResult.outcome === 'accepted') {
                   addToHomeScreen.isAvailable = false;
                   console.log('User accepted the A2HS prompt');
                 } else {
                     addToHomeScreen.isAvailable = true;
+                    addToHomeScreen.isInstalling = false;
                     console.log('User dismissed the A2HS prompt');
                 }
             } catch {
                 addToHomeScreen.isAvailable = true;
                 addToHomeScreen.isInstalling = false;
             }
-            
             addToHomeScreen.checkStatus();
         }
     }
